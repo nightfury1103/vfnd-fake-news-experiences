@@ -23,9 +23,9 @@ def token_sylabling(text):
     non_word = "[^\w\s]"
     abbreviations = [
         "[A-ZĐ]+\.",
-        "Tp\.",
+        "Tp\.?",
         "Mr\.", "Mrs\.", "Ms\.",
-        "Dr\.", "ThS\.", "TS\.", "GS\.", "PSG\."
+        "Dr\.?", "ThS\.?", "TS\.?", "GS\.?", "PSG\.?"
     ]
     
     patterns = []
