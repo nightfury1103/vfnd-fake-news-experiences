@@ -25,4 +25,3 @@ def remove_stopwords(paragraph, stopwords):
     if not word in stopwords:
       new_para.append(word)
   return new_para
-
