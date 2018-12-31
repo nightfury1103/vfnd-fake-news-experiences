@@ -1,7 +1,7 @@
 import json, os, ast, re, sys
 import unicodedata as ud
 
-from text_utils import remove_stopwords, token_sylabling
+from text_utils import remove_stopwords, token_sylabling, is_word
 from utils import load_file_with_newline
 import urlmarker
 
@@ -81,5 +81,6 @@ def text_preprocessing(text):
     token_list = token_sylabling(text)
     word_list = LongestMatching(token_list, bi_gram, tri_gram, four_gram)
     remove_stopword_list = remove_stopwords(word_list, stopwords)
-    new_text = ' '.join(remove_stopword_list)
+    remove_non_word = [s for s in remove_stopword_list if is_word(s)]
+    new_text = ' '.join(remove_non_word)
     return new_text.lower()
