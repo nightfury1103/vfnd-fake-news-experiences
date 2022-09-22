@@ -10,7 +10,7 @@ import urlmarker
 """
 def token_sylabling(text):    
     text = ud.normalize("NFC", text)
-    
+
     sign = ["==>", "=>", "->", "\.\.\.", ">>"]
     digits = "\d+([\.,_]\d+)?"
     email = "[\w\.-]+@[\w\.-]+"
@@ -27,15 +27,13 @@ def token_sylabling(text):
         "Mr\.", "Mrs\.", "Ms\.",
         "Dr\.?", "ThS\.?", "TS\.?", "GS\.?", "PSG\.?"
     ]
-    
-    patterns = []
-    patterns.extend(abbreviations)
-    patterns.extend(sign)    
+
+    patterns = list(abbreviations)
+    patterns.extend(sign)
     patterns.extend(datetime)
-    patterns.extend([web, email])
-    patterns.extend([digits, non_word, word])
+    patterns.extend([web, email, digits, non_word, word])
     patterns = "(" + "|".join(patterns) + ")"
-    
+
     if sys.version_info < (3, 0):
             patterns = patterns.decode("utf-8")
     tokens = re.findall(patterns, text, re.UNICODE)
@@ -49,11 +47,7 @@ def token_sylabling(text):
   output: List() of words after remove stopwords
 """
 def remove_stopwords(paragraph, stopwords):
-  new_para = []
-  for word in paragraph:
-    if not word in stopwords:
-      new_para.append(word)
-  return new_para
+    return [word for word in paragraph if word not in stopwords]
 
 """
   remove_punc: remove punctuation from text
@@ -70,28 +64,26 @@ def remove_punc(text):
   is_word: Check if <string> is a word
 """
 def is_word(string):
-  sign = ["==>", "=>", "->", "\.\.\.", ">>"]
-  digits = "\d+([\.,_]\d+)?"
-  email = "[\w\.-]+@[\w\.-]+"
-  web = urlmarker.WEB_URL_REGEX
-  datetime = [
-      "\d{1,2}\/\d{1,2}(\/\d+)?",
-      "\d{1,2}-\d{1,2}(-\d+)?",
-  ]
-  non_word = "[^\w\s]"
-  abbreviations = [
-      "[A-ZĐ]+\.",
-      "Tp\.?",
-      "Mr\.", "Mrs\.", "Ms\.",
-      "Dr\.?", "ThS\.?", "TS\.?", "GS\.?", "PSG\.?"
-  ]
-  
-  patterns = []
-  patterns.extend(abbreviations)
-  patterns.extend(sign)    
-  patterns.extend(datetime)
-  patterns.extend([web, email])
-  patterns.extend([digits, non_word])
-  patterns = "(" + "|".join(patterns) + ")"
-  patterns = re.compile(patterns)
-  return not bool(patterns.match(string))
+    sign = ["==>", "=>", "->", "\.\.\.", ">>"]
+    digits = "\d+([\.,_]\d+)?"
+    email = "[\w\.-]+@[\w\.-]+"
+    web = urlmarker.WEB_URL_REGEX
+    datetime = [
+        "\d{1,2}\/\d{1,2}(\/\d+)?",
+        "\d{1,2}-\d{1,2}(-\d+)?",
+    ]
+    non_word = "[^\w\s]"
+    abbreviations = [
+        "[A-ZĐ]+\.",
+        "Tp\.?",
+        "Mr\.", "Mrs\.", "Ms\.",
+        "Dr\.?", "ThS\.?", "TS\.?", "GS\.?", "PSG\.?"
+    ]
+
+    patterns = list(abbreviations)
+    patterns.extend(sign)
+    patterns.extend(datetime)
+    patterns.extend([web, email, digits, non_word])
+    patterns = "(" + "|".join(patterns) + ")"
+    patterns = re.compile(patterns)
+    return not bool(patterns.match(string))
