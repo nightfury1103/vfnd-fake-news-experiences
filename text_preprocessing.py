@@ -26,54 +26,54 @@ def LongestMatching(token, bi_gram, tri_gram, four_gram):
     token_len = len(token)
     cur_id = 0
     word_list = []
-    
+
     #done: True when cur_id reach 
     done = False
-    
+
     while (cur_id < token_len) and (not done):
         cur_word = token[cur_id]
-        if(cur_id >= token_len - 1):
+        if (cur_id >= token_len - 1):
             word_list.append(cur_word)
             done = True
         else:
             next_word = token[cur_id + 1]
             bi_word = " ".join([cur_word.lower(), next_word.lower()])
-            if(cur_id >= token_len - 2):
+            if (cur_id >= token_len - 2):
                 if bi_word in bi_gram:
                     word_list.append("_".join([cur_word, next_word]))
-                    cur_id  = cur_id + 2
+                    cur_id += 2
                 else: 
                     word_list.append(cur_word)
-                    cur_id  = cur_id + 1
-                        
+                    cur_id += 1
+
             else: 
                 bi_next_word = token[cur_id + 2]
                 tri_word = " ".join([bi_word, bi_next_word.lower()])
-                if(cur_id >= token_len - 3):
+                if (cur_id >= token_len - 3):
                     if tri_word in tri_gram:
                         word_list.append("_".join([cur_word, next_word, bi_next_word]))
-                        cur_id  = cur_id + 3
+                        cur_id += 3
                     elif bi_word in bi_gram:
                         word_list.append("_".join([cur_word, next_word]))
-                        cur_id = cur_id + 2
+                        cur_id += 2
                     else:
                         word_list.append(cur_word)
-                        cur_id = cur_id + 1
+                        cur_id += 1
                 else:
                     tri_next_word = token[cur_id + 3]
                     four_word = " ".join([tri_word, tri_next_word.lower()])
                     if four_word in four_gram:
                         word_list.append("_".join([cur_word, next_word, bi_next_word, tri_next_word]))
-                        cur_id  = cur_id + 4
+                        cur_id += 4
                     elif tri_word in tri_gram:
                         word_list.append("_".join([cur_word, next_word, bi_next_word]))
-                        cur_id  = cur_id + 3
+                        cur_id += 3
                     elif bi_word in bi_gram:
                         word_list.append("_".join([cur_word, next_word]))
-                        cur_id = cur_id + 2
+                        cur_id += 2
                     else:
                         word_list.append(cur_word)
-                        cur_id = cur_id + 1
+                        cur_id += 1
     return word_list
 
 
